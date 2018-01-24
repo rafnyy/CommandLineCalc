@@ -2,7 +2,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using calculator;
 
-
 namespace calculatorTests
 {
     [TestClass]
@@ -73,6 +72,54 @@ namespace calculatorTests
             Parser parser = new Parser("0.5 1/x * 2 =");
             double actual = parser.Eval();
             Assert.AreEqual(4, actual);
+        }
+
+        [TestMethod]
+        public void ComplexOrderOfOperations()
+        {
+            Parser parser = new Parser("1+2*3-4*5-14/7=");
+            double actual = parser.Eval();
+            Assert.AreEqual(-15, actual);
+        }
+
+        [TestMethod]
+        public void ComplexOrderOfOperations2()
+        {
+            Parser parser = new Parser("2*2+3*3-7*7=");
+            double actual = parser.Eval();
+            Assert.AreEqual(-36, actual);
+        }
+
+        [TestMethod]
+        public void ComplexOrderOfOperations3()
+        {
+            Parser parser = new Parser("2*2+3*3-30/5=");
+            double actual = parser.Eval();
+            Assert.AreEqual(7, actual);
+        }
+
+        [TestMethod]
+        public void ComplexOrderOfOperations4()
+        {
+            Parser parser = new Parser("2*2+3*3-30/8=");
+            double actual = parser.Eval();
+            Assert.AreEqual(9.25, actual);
+        }
+
+        [TestMethod]
+        public void ReciprocalTwiceEqualsOriginalValue()
+        {
+            Parser parser = new Parser("21/x1/x=");
+            double actual = parser.Eval();
+            Assert.AreEqual(1, actual);
+        }
+
+        [TestMethod]
+        public void ComplexOrderOfOperations5()
+        {
+            Parser parser = new Parser("3!1/x1/x!=");
+            double actual = parser.Eval();
+            Assert.AreEqual(6, actual);
         }
     }
 }

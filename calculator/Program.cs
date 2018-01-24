@@ -118,13 +118,13 @@ namespace calculator
         Node tree = null;
         public void addValue(double value)
         {
-            if (tree == null)
+            if(tree is OperatorNode)
             {
-                tree = new ValueNode(value);
+                ((OperatorNode)tree).addRightNode(new ValueNode(value));
             }
             else
             {
-                tree.addRightNode(new ValueNode(value));
+                tree = new ValueNode(value);
             }
         }
 
@@ -151,7 +151,7 @@ namespace calculator
                 {
                     Node valueNode = ((OperatorNode)tree).right;
                     ((OperatorNode)tree).right = null;
-                    tree.addRightNode(new OperatorNode(valueNode, op));
+                    ((OperatorNode)tree).addRightNode(new OperatorNode(valueNode, op));
                 }
                 else
                 {
@@ -177,8 +177,6 @@ namespace calculator
 
         abstract public int getPrecedence();
 
-        abstract public void addRightNode(Node node);
-
         abstract public Node clear();
     }
 
@@ -189,11 +187,6 @@ namespace calculator
         public ValueNode(double value)
         {
             this.value = value;
-        }
-
-        public override void addRightNode(Node node)
-        {
-            throw new NotImplementedException();
         }
 
         public override double Eval()
@@ -225,15 +218,15 @@ namespace calculator
             right = null;
         }
 
-        public override void addRightNode(Node node)
+        public void addRightNode(Node node)
         {
-            if (right == null)
+            if (right is OperatorNode)
             {
-                right = node;
+               ((OperatorNode)right).addRightNode(node);
             }
             else
             {
-                right.addRightNode(node);
+                 right = node;
             }
         }
 
