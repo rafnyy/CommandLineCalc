@@ -28,7 +28,7 @@ Concat numbers in a string until something else encountered by the parser.
 #### Single Parameter High Precedence Operators (* and /)
 When these are encountered we need two numbers, one on either side to calculate the final value. Due to this and order of operations rules, we instead add the operator and previous number to a tree until we need to run a evaluation (encounter =). When adding these operators to the EquationTree we do not want to add these as the root of the EquationTree if the current operator there is lower precedence. We instead, want to add it to the right of all lower precedence operators.
 
-#### Single Parameter Low Precedence Operators (+and -)
+#### Single Parameter Low Precedence Operators (+ and -)
 When these are encountered we again need two numbers. We always add these operators as the new root of the EquationTree.
 
 A leading - or a - after another operator indicates that this is a negative number and not an operator. Handled in a custom conditional.
@@ -42,3 +42,11 @@ When quit the program.
 ### Equation Tree
 The EquationTree is a binary tree that is recursively evaluated to evaluate an equation. The root node must be an oeprator (except an EquationTree with only one Node, then it is a number) and all leaf nodes must be numbers. Evaluation starts at the leaf nodes and the deepest operators and works its way up until the root node's operator is the last evaluated.
 
+### Calculator Limitations
+There are some unique challenges around factorials, recipricals, and division.
+
+First off factorials are not defined for negative or non integer numbers. These therefore will throw an exception. Even if starting with an integer as the value typed into the calculator, reciprical and division may create a double. So something like 3/2! or 31/x! will throw exceptions.
+
+Less obvious are the issues with divsion and by exstension recipricals. Since a double (or any primitive for that matter) can only store a finite amount of data, these operations are not exact. Therefore some statements may not evaluate in a perfectly correct mathematical sense. 61/x1/x= should return 6 since the reciprocal of a reciprocal should always equal the original value. (1/6)*6=6. 1/6 represented by a decimal is 0.16666 with the 6 repeating for infinity. By performing division and storing this in a double we truncate and round it so that it actually gets represented by 0.166666666666667. So in the calucaltor 1/6=61/x=0.166666666666667. 0.166666666666667*6=61/x1/x=5.99999999999999. There is no equation preprocessing to simplify unneeded terms. Every operation is user input and evaluated. Any equation with division or recipricals is thus and estimation.
+
+For division and recirpicals there are also divide by zero exceptions.

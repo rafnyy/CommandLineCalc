@@ -75,6 +75,54 @@ namespace calculatorTests
         }
 
         [TestMethod]
+        public void ReciprocalTwiceEqualsOriginalValue()
+        {
+            Parser parser = new Parser("11/x1/x=");
+            double actual = parser.Eval();
+            Assert.AreEqual(1, actual);
+        }
+
+        [TestMethod]
+        public void FactorialOfZeroEqualsOne()
+        {
+            Parser parser = new Parser("0!=");
+            double actual = parser.Eval();
+            Assert.AreEqual(1, actual);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(NotSupportedException), "Factorial not defined for negative numbers")]
+        public void NegativeFactorialThrowError()
+        {
+            Parser parser = new Parser("-2!=");
+            double actual = parser.Eval();
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(NotSupportedException), "Factorial not defined for non integer numbers")]
+        public void NonIntegerFactorialThrowError()
+        {
+            Parser parser = new Parser("0.1!=");
+            double actual = parser.Eval();
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(DivideByZeroException), "Attempted to divide by zero.")]
+        public void DivideByZero()
+        {
+            Parser parser = new Parser("1/0=");
+            double actual = parser.Eval();
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(DivideByZeroException), "Reciprocal of zero causes divide by zero")]
+        public void DivideByZeroReciprical()
+        {
+            Parser parser = new Parser("01/x=");
+            double actual = parser.Eval();
+        }
+
+         [TestMethod]
         public void ComplexOrderOfOperations()
         {
             Parser parser = new Parser("1+2*3-4*5-14/7=");
@@ -107,19 +155,11 @@ namespace calculatorTests
         }
 
         [TestMethod]
-        public void ReciprocalTwiceEqualsOriginalValue()
-        {
-            Parser parser = new Parser("21/x1/x=");
-            double actual = parser.Eval();
-            Assert.AreEqual(1, actual);
-        }
-
-        [TestMethod]
         public void ComplexOrderOfOperations5()
         {
-            Parser parser = new Parser("3!1/x1/x!=");
+            Parser parser = new Parser("2!1/x1/x=");
             double actual = parser.Eval();
-            Assert.AreEqual(6, actual);
+            Assert.AreEqual(2, actual);
         }
     }
 }

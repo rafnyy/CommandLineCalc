@@ -79,7 +79,7 @@ namespace calculator
         {
             if (constant == 0)
             {
-                throw new DivideByZeroException();
+                throw new DivideByZeroException("Reciprocal of zero causes divide by zero");
             }
 
             return 1 / constant;
@@ -99,7 +99,7 @@ namespace calculator
         {
             if (constant < 0)
             {
-                throw new NotSupportedException();
+                throw new NotSupportedException("Factorial not defined for negative numbers");
             }
 
             int product = 1;
@@ -302,7 +302,7 @@ namespace calculator
             for (int i = 0; i < line.Length; i++)
             {
                 char c = line[i];
-                if ((num == "" && c == '-') || c == '0' || c == '1' || c == '2' || c == '3' || c == '4' || c == '5' || c == '6' || c == '7' || c == '8' || c == '9' || c == '.')
+                if ((num == "" && c == '-') || Char.IsDigit(c) || c == '.')
                 {
                     num += c;
                 }
@@ -320,11 +320,14 @@ namespace calculator
                 }
                 else if (c == '!')
                 {
-                    int x = Int32.Parse(num);
-
-                    Factorial factorial = new Factorial(x);
-                    equationTree.addValue(factorial.Eval());
-                    num = "";
+                    try {
+                        int x = Int32.Parse(num);
+                        Factorial factorial = new Factorial(x);
+                        num = factorial.Eval().ToString();
+                    }
+                    catch(FormatException) {
+                        throw new NotSupportedException("Factorial not defined for non integer numbers");
+                    }
                 }
                 else if (c == '/')
                 {
@@ -337,8 +340,7 @@ namespace calculator
                         num = num.Substring(0, num.Length - 1);
                         double x = Convert.ToDouble(num);
                         Reciprocal reciprocal = new Reciprocal(x);
-                        equationTree.addValue(reciprocal.Eval());
-                        num = "";
+                        num = reciprocal.Eval().ToString();
                         i++;
                     }
                     else
@@ -376,8 +378,7 @@ namespace calculator
             return evaluatedValue;
         }
 
-        /* The test class or client */
-        internal class Program
+        internal class InteractiveShell
         {
             public static void Main(string[] arguments)
             {
