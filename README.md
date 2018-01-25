@@ -16,10 +16,12 @@ equals sign. For example
 
 ### Character Classes
 
+The Parser encounters different characters and needs to decide what to do with them.
+
 #### Equals (=)
 Special case, handled by the shell. Responsible for forcing evaluation of EquationTree and displaying output. Otherwise it can be ignored by the parser. Takes current calculated value and sets it as the root of a new EquationTree.
 
-#### Numbers (0-9)
+#### Numbers and Decimal Point (0-9 .)
 Concat numbers in a string until something else encountered by the parser.
 
 #### Single Parameter Operators (! and 1/x)
@@ -38,6 +40,9 @@ These operators modify (remove items) from the existing EquationTree. All Clear 
 
 #### Quit (Q)
 When quit the program.
+
+#### Other
+Simply ignored, includes white space
 
 ### Equation Tree
 The EquationTree is a binary tree that is recursively evaluated to evaluate an equation. The root node must be an oeprator (except an EquationTree with only one Node, then it is a number) and all leaf nodes must be numbers. Evaluation starts at the leaf nodes and the deepest operators and works its way up until the root node's operator is the last evaluated.
